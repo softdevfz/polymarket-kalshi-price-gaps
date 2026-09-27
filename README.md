@@ -1,0 +1,75 @@
+# Polymarket vs Kalshi price gaps (daily open dataset)
+
+What does the **same** prediction-market contract cost on Polymarket and on Kalshi once fees are included? This repository answers that once a day and keeps the history.
+
+Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) API. It records the all-in price of a $100 order on both venues for every contract pair whose resolution rules have been reviewed as equivalent. Nothing is estimated from headline odds. The prices come from walking each venue's live order book, with estimated taker fees included.
+
+<!-- LATEST:START -->
+
+Snapshot `2026-09-27T04:19:57.414501+00:00` · 1 day(s) of history in `data/summary.csv`.
+
+| Matched contract sides | Median saving on the cheaper venue | Polymarket cheaper | Kalshi cheaper |
+|---:|---:|---:|---:|
+| 31 | 10.29% | 16 | 15 |
+
+Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):
+
+| Outcome | Polymarket | Kalshi | Cheaper | Saving |
+|---|---:|---:|---|---:|
+| Yes: Andy Beshear wins and accepts the 2028 Democratic presidential nomination | 3.00¢ | 6.93¢ | Polymarket | 56.6% |
+| Yes: Mark Kelly wins and accepts the 2028 Democratic presidential nomination | 3.12¢ | 4.59¢ | Polymarket | 32.1% |
+| Yes: Marco Rubio wins and accepts the 2028 Republican presidential nomination | 16.13¢ | 21.12¢ | Polymarket | 23.6% |
+| Yes: Josh Shapiro wins and accepts the 2028 Democratic presidential nomination | 6.43¢ | 5.01¢ | Kalshi | 22.1% |
+| Yes: Kamala Harris wins and accepts the 2028 Democratic presidential nomination | 6.54¢ | 7.56¢ | Polymarket | 13.6% |
+
+Live version: https://voxodds.com/polymarket-vs-kalshi
+
+<!-- LATEST:END -->
+
+## Files
+
+| File | What it contains |
+|---|---|
+| `data/daily/YYYY-MM-DD.csv` | One row per matched contract side (Yes and No are separate rows) for that day's snapshot |
+| `data/latest.csv` | Copy of the most recent daily file |
+| `data/summary.csv` | One row per day: matched sides, median and mean saving, how often each venue was cheaper |
+
+### Columns in the daily files
+
+| Column | Meaning |
+|---|---|
+| `snapshot_utc` | When VoxOdds computed the quotes |
+| `opportunity_id` | Stable VoxOdds id for the pair and side |
+| `family` | Market family, for example `republican_nominee_2028` |
+| `side`, `outcome` | The outcome being bought |
+| `polymarket_id`, `kalshi_ticker` | Venue identifiers of the two paired markets |
+| `budget_usd` | All-in budget used for the quote (100) |
+| `polymarket_all_in_price`, `kalshi_all_in_price` | Effective average price per contract including estimated taker fees (0 to 1) |
+| `polymarket_fee_usd`, `kalshi_fee_usd` | Estimated fees for the order |
+| `polymarket_shares`, `kalshi_shares` | Contracts the budget buys on each venue |
+| `cheaper_venue` | `polymarket`, `kalshi` or `tie` |
+| `advantage_pct` | How much lower the cheaper venue's effective price is, in percent |
+| `reviewed_at` | When the pair's equivalence was last reviewed |
+| `voxodds_url` | Live quote page for the pair |
+
+## Method and caveats
+
+- **Pairing is fail-closed.** Only pairs pinned to reviewed question and rule fingerprints are included. If a venue changes its rules, the pair drops out until it is reviewed again.
+- **Fees are estimates.** Polymarket taker fees are modeled as shares × live fee rate × price × (1 - price). Kalshi fees are modeled as 0.07 × contracts × price × (1 - price), with zero-fee series handled explicitly. The venue's own order preview is authoritative.
+- **Snapshots, not averages.** Each file is one moment in time. Order books move, and a quote can change before execution.
+- **Long shots.** Contracts priced under 2 cents can show very large percentage gaps on small absolute amounts.
+- Check venue eligibility and your jurisdiction before trading. Market-implied odds, not financial advice.
+
+## Live sources
+
+- Live comparison page: https://voxodds.com/polymarket-vs-kalshi
+- JSON API: https://voxodds.com/api/v1/executable-opportunities?amount_usd=100
+- MCP server for AI agents (no key needed): https://voxodds.com/mcp · registry name `com.voxodds/voxodds`
+
+## License and citation
+
+The data is published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and the code under the MIT license. Please cite as:
+
+> VoxOdds, "Polymarket vs Kalshi price gaps (daily open dataset)", https://github.com/softdevfz/polymarket-kalshi-price-gaps
+
+Questions or corrections: open an issue.
