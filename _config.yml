@@ -1,0 +1,7 @@
+title: Polymarket vs Kalshi price gaps
+description: Daily open dataset of what the same prediction-market contract costs on Polymarket and on Kalshi, fees included, with the VoxOdds Gap Index. CSV, CC BY 4.0.
+url: https://softdevfz.github.io
+baseurl: /polymarket-kalshi-price-gaps
+exclude:
+  - scripts
+lang: en
