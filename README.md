@@ -4,6 +4,8 @@ What does the **same** prediction-market contract cost on Polymarket and on Kals
 
 Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) API. It records the all-in price of a $100 order on both venues for every contract pair whose resolution rules have been reviewed as equivalent. Nothing is estimated from headline odds. The prices come from walking each venue's live order book, with estimated taker fees included.
 
+[![VoxOdds Gap Index, live](https://voxodds.com/og/polymarket-vs-kalshi.png)](https://voxodds.com/polymarket-vs-kalshi)
+
 <!-- LATEST:START -->
 
 Snapshot `2026-09-28T05:12:18.203014+00:00` · 2 day(s) of history in `data/summary.csv`.
