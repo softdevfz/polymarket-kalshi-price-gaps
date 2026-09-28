@@ -6,21 +6,21 @@ Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) AP
 
 <!-- LATEST:START -->
 
-Snapshot `2026-09-27T10:33:59.735205+00:00` · 1 day(s) of history in `data/summary.csv`.
+Snapshot `2026-09-28T05:12:18.203014+00:00` · 2 day(s) of history in `data/summary.csv`.
 
-| Matched contract sides | Median saving on the cheaper venue | Polymarket cheaper | Kalshi cheaper |
+| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue) | Polymarket cheaper | Kalshi cheaper |
 |---:|---:|---:|---:|
-| 26 | 11.93% | 15 | 11 |
+| 33 | 12.32% | 20 | 13 |
 
 Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):
 
 | Outcome | Polymarket | Kalshi | Cheaper | Saving |
 |---|---:|---:|---|---:|
-| Yes: Andy Beshear wins and accepts the 2028 Democratic presidential nomination | 3.01¢ | 6.92¢ | Polymarket | 56.5% |
-| Yes: Ron DeSantis wins and accepts the 2028 Republican presidential nomination | 2.95¢ | 4.69¢ | Polymarket | 37.2% |
+| Yes: Andy Beshear wins and accepts the 2028 Democratic presidential nomination | 3.00¢ | 6.71¢ | Polymarket | 55.3% |
+| Yes: Ron DeSantis wins and accepts the 2028 Republican presidential nomination | 3.01¢ | 4.69¢ | Polymarket | 35.8% |
 | Yes: Mark Kelly wins and accepts the 2028 Democratic presidential nomination | 3.12¢ | 4.59¢ | Polymarket | 32.1% |
+| Yes: Marco Rubio wins and accepts the 2028 Republican presidential nomination | 16.16¢ | 21.12¢ | Polymarket | 23.5% |
 | Yes: Josh Shapiro wins and accepts the 2028 Democratic presidential nomination | 6.43¢ | 5.01¢ | Kalshi | 22.1% |
-| Yes: Kamala Harris wins and accepts the 2028 Democratic presidential nomination | 6.54¢ | 7.56¢ | Polymarket | 13.6% |
 
 Live version: https://voxodds.com/polymarket-vs-kalshi
 
@@ -32,7 +32,7 @@ Live version: https://voxodds.com/polymarket-vs-kalshi
 |---|---|
 | `data/daily/YYYY-MM-DD.csv` | One row per matched contract side (Yes and No are separate rows) for that day's snapshot |
 | `data/latest.csv` | Copy of the most recent daily file |
-| `data/summary.csv` | One row per day: matched sides, median and mean saving, how often each venue was cheaper |
+| `data/summary.csv` | One row per day: matched sides, the VoxOdds Gap Index (`median_advantage_pct`), mean saving, how often each venue was cheaper |
 
 ### Columns in the daily files
 
@@ -51,6 +51,10 @@ Live version: https://voxodds.com/polymarket-vs-kalshi
 | `advantage_pct` | How much lower the cheaper venue's effective price is, in percent |
 | `reviewed_at` | When the pair's equivalence was last reviewed |
 | `voxodds_url` | Live quote page for the pair |
+
+## The VoxOdds Gap Index
+
+The VoxOdds Gap Index is the median fee-inclusive saving on the cheaper venue across all contracts matched on Polymarket and Kalshi, for a $100 all-in order. It is the `median_advantage_pct` column of `data/summary.csv`, one value per day.
 
 ## Method and caveats
 

@@ -107,7 +107,7 @@ def refresh_readme(summary, rows, days):
     lines = [
         start, "",
         f"Snapshot `{summary['snapshot_utc']}` · {days} day(s) of history in `data/summary.csv`.", "",
-        "| Matched contract sides | Median saving on the cheaper venue | Polymarket cheaper | Kalshi cheaper |",
+        "| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue) | Polymarket cheaper | Kalshi cheaper |",
         "|---:|---:|---:|---:|",
         f"| {summary['matched_sides']} | {summary['median_advantage_pct']}% | {summary['polymarket_cheaper']} | {summary['kalshi_cheaper']} |",
         "", "Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):", "",
