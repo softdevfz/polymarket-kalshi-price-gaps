@@ -20,7 +20,21 @@ ROW_FIELDS = [
 SUMMARY_FIELDS = [
     "date", "snapshot_utc", "pairs_scanned", "matched_sides", "median_advantage_pct",
     "mean_advantage_pct", "polymarket_cheaper", "kalshi_cheaper", "ties",
+    "gap_index_pct", "index_sides",
 ]
+
+
+def is_long_shot(row):
+    """All-in price below 2 cents or above 98 cents on either venue (excluded from the index)."""
+    prices = (float(row["polymarket_all_in_price"]), float(row["kalshi_all_in_price"]))
+    return any(p < 0.02 or p > 0.98 for p in prices)
+
+
+def gap_index(rows):
+    """VoxOdds Gap Index: median advantage over contract sides that are not long shots."""
+    adv = [float(r["advantage_pct"]) for r in rows
+           if r["advantage_pct"] not in ("", None) and not is_long_shot(r)]
+    return (round(statistics.median(adv), 2) if adv else ""), len(adv)
 
 
 def fetch():
@@ -75,6 +89,7 @@ def summarize(payload, rows):
         "mean_advantage_pct": round(statistics.fmean(adv), 2) if adv else "",
         "polymarket_cheaper": venues.count("polymarket"), "kalshi_cheaper": venues.count("kalshi"),
         "ties": venues.count("tie"),
+        **dict(zip(("gap_index_pct", "index_sides"), gap_index(rows))),
     }
 
 
@@ -86,12 +101,21 @@ def write_csv(path, fields, rows):
         writer.writerows(rows)
 
 
+def backfill(row):
+    """Fill gap_index_pct for days recorded before the column existed, from that day's file."""
+    daily = DATA / "daily" / f"{row['date']}.csv"
+    if row.get("gap_index_pct") in (None, "") and daily.exists():
+        with daily.open(newline="", encoding="utf-8") as fh:
+            row["gap_index_pct"], row["index_sides"] = gap_index(list(csv.DictReader(fh)))
+    return row
+
+
 def upsert_summary(summary):
     path = DATA / "summary.csv"
     existing = []
     if path.exists():
         with path.open(newline="", encoding="utf-8") as fh:
-            existing = [r for r in csv.DictReader(fh) if r["date"] != summary["date"]]
+            existing = [backfill(r) for r in csv.DictReader(fh) if r["date"] != summary["date"]]
     write_csv(path, SUMMARY_FIELDS, sorted(existing + [summary], key=lambda r: r["date"]))
     return len(existing) + 1
 
@@ -107,9 +131,9 @@ def refresh_readme(summary, rows, days):
     lines = [
         start, "",
         f"Snapshot `{summary['snapshot_utc']}` · {days} day(s) of history in `data/summary.csv`.", "",
-        "| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue) | Polymarket cheaper | Kalshi cheaper |",
+        "| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue, long shots excluded) | Polymarket cheaper | Kalshi cheaper |",
         "|---:|---:|---:|---:|",
-        f"| {summary['matched_sides']} | {summary['median_advantage_pct']}% | {summary['polymarket_cheaper']} | {summary['kalshi_cheaper']} |",
+        f"| {summary['matched_sides']} | {summary['gap_index_pct']}% ({summary['index_sides']} sides) | {summary['polymarket_cheaper']} | {summary['kalshi_cheaper']} |",
         "", "Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):", "",
         "| Outcome | Polymarket | Kalshi | Cheaper | Saving |", "|---|---:|---:|---|---:|",
     ]

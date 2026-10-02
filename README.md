@@ -10,9 +10,9 @@ Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) AP
 
 Snapshot `2026-10-02T11:07:08.149902+00:00` · 6 day(s) of history in `data/summary.csv`.
 
-| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue) | Polymarket cheaper | Kalshi cheaper |
+| Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue, long shots excluded) | Polymarket cheaper | Kalshi cheaper |
 |---:|---:|---:|---:|
-| 38 | 10.04% | 23 | 15 |
+| 38 | 5.49% (23 sides) | 23 | 15 |
 
 Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):
 
@@ -34,7 +34,7 @@ Live version: https://voxodds.com/polymarket-vs-kalshi
 |---|---|
 | `data/daily/YYYY-MM-DD.csv` | One row per matched contract side (Yes and No are separate rows) for that day's snapshot |
 | `data/latest.csv` | Copy of the most recent daily file |
-| `data/summary.csv` | One row per day: matched sides, the VoxOdds Gap Index (`median_advantage_pct`), mean saving, how often each venue was cheaper |
+| `data/summary.csv` | One row per day: matched sides, the VoxOdds Gap Index (`gap_index_pct`, long shots excluded, and `index_sides`), the median and mean saving over all sides, how often each venue was cheaper |
 
 ### Columns in the daily files
 
@@ -56,7 +56,9 @@ Live version: https://voxodds.com/polymarket-vs-kalshi
 
 ## The VoxOdds Gap Index
 
-The VoxOdds Gap Index is the median fee-inclusive saving on the cheaper venue across all contracts matched on Polymarket and Kalshi, for a $100 all-in order. It is the `median_advantage_pct` column of `data/summary.csv`, one value per day.
+The VoxOdds Gap Index is the median fee-inclusive saving on the cheaper venue across contracts matched on Polymarket and Kalshi, for a $100 all-in order, **excluding long shots** (an all-in price below 2¢ or above 98¢ on either venue). It is the `gap_index_pct` column of `data/summary.csv`, one value per day; `index_sides` is how many contract sides it covers.
+
+Why long shots are excluded (from 3 October 2026): on a contract priced at a fraction of a cent, a 0.1¢ difference reads as a 50%+ saving. With those sides included, the median sat between a cluster of near-zero gaps and a cluster of very large ones, so one or two rows entering or leaving the snapshot could move it from about 4% to about 11%. `gap_index_pct` is backfilled from the daily files for every day in the dataset. The previous definition, which included every side, remains available as `median_advantage_pct`.
 
 ## Method and caveats
 
