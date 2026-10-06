@@ -8,21 +8,21 @@ Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) AP
 
 <!-- LATEST:START -->
 
-Snapshot `2026-10-05T12:17:27.775587+00:00` · 9 day(s) of history in `data/summary.csv`.
+Snapshot `2026-10-06T12:02:23.365761+00:00` · 10 day(s) of history in `data/summary.csv`.
 
 | Matched contract sides | VoxOdds Gap Index (median saving on the cheaper venue, long shots excluded) | Polymarket cheaper | Kalshi cheaper |
 |---:|---:|---:|---:|
-| 37 | 9.84% (22 sides) | 24 | 13 |
+| 37 | 9.21% (23 sides) | 24 | 13 |
 
 Widest gaps in this snapshot, contracts priced at 2¢ or more ($100 all-in, fees included):
 
 | Outcome | Polymarket | Kalshi | Cheaper | Saving |
 |---|---:|---:|---|---:|
-| Yes: Andy Beshear wins and accepts the 2028 Democratic presidential nomination | 3.63¢ | 6.18¢ | Polymarket | 41.3% |
-| Yes: Mark Kelly wins and accepts the 2028 Democratic presidential nomination | 2.77¢ | 4.58¢ | Polymarket | 39.6% |
-| Yes: Ron DeSantis wins and accepts the 2028 Republican presidential nomination | 2.84¢ | 4.59¢ | Polymarket | 38.0% |
-| Yes: Alexandria Ocasio-Cortez wins and accepts the 2028 Democratic presidential nomination | 18.52¢ | 14.84¢ | Kalshi | 19.9% |
-| Yes: Josh Shapiro wins and accepts the 2028 Democratic presidential nomination | 6.23¢ | 5.01¢ | Kalshi | 19.5% |
+| Yes: Andy Beshear wins and accepts the 2028 Democratic presidential nomination | 3.63¢ | 6.31¢ | Polymarket | 42.5% |
+| Yes: Mark Kelly wins and accepts the 2028 Democratic presidential nomination | 2.74¢ | 4.55¢ | Polymarket | 39.8% |
+| Yes: Ron DeSantis wins and accepts the 2028 Republican presidential nomination | 2.89¢ | 4.59¢ | Polymarket | 37.0% |
+| Yes: Josh Shapiro wins and accepts the 2028 Democratic presidential nomination | 7.26¢ | 5.01¢ | Kalshi | 30.9% |
+| Yes: Alexandria Ocasio-Cortez wins and accepts the 2028 Democratic presidential nomination | 18.59¢ | 14.84¢ | Kalshi | 20.1% |
 
 Live version: https://voxodds.com/polymarket-vs-kalshi
 
