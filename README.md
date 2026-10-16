@@ -58,6 +58,7 @@ Why long shots are excluded (from 3 October 2026): on a contract priced at a fra
 ## Method and caveats
 
 - **Pairing is fail-closed.** Only pairs pinned to reviewed question and rule fingerprints are included. If a venue changes its rules, the pair drops out until it is reviewed again.
+  - 2026-10-15: Kalshi edited the wording of its 2028 presidential-nomination markets, so those 19 pairs dropped out of that day's snapshot (3 matched sides, all long shots, no Gap Index value). They returned on 2026-10-16 after the new wording was reviewed: both venues still require the named person to win and accept the 2028 nomination.
 - **Fees are estimates.** Polymarket taker fees are modeled as shares × live fee rate × price × (1 - price). Kalshi fees are modeled as 0.07 × contracts × price × (1 - price), with zero-fee series handled explicitly. The venue's own order preview is authoritative.
 - **Snapshots, not averages.** Each file is one moment in time. Order books move, and a quote can change before execution.
 - **Long shots.** Contracts priced under 2 cents can show very large percentage gaps on small absolute amounts.
