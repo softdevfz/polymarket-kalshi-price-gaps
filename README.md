@@ -1,6 +1,8 @@
 # Polymarket vs Kalshi price gaps (daily open dataset)
 
-What does the **same** prediction-market contract cost on Polymarket and on Kalshi once fees are included? This repository answers that once a day and keeps the history.
+What does the **same** prediction-market contract cost on Polymarket and on Kalshi once fees are included? This repository answered that once a day from 2026-09-27 to 2026-10-16 and keeps the history.
+
+> **Daily snapshots are paused since 2026-10-16.** The last snapshot is 2026-10-16; the files below remain available.
 
 Every morning a GitHub Action calls the public [VoxOdds](https://voxodds.com) API. It records the all-in price of a $100 order on both venues for every contract pair whose resolution rules have been reviewed as equivalent. Nothing is estimated from headline odds. The prices come from walking each venue's live order book, with estimated taker fees included.
 
